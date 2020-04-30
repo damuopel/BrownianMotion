@@ -4,9 +4,10 @@ import numpy as np
 
 WIDTH, HEIGHT = 500,500
 COLORS = {'k':(0,0,0),'w':(255,255,255),'g':(0,255,0),'r':(255,0,0),'y':(255,255,0),'b':(0,0,255)}
-r = 10
+r = 5
 t = 0.01
 v = 1000
+n = 100
 
 pygame.init()
 
@@ -50,16 +51,15 @@ class System:
         for i,iBall in enumerate(self.balls):
             for j,jBall in enumerate(self.balls):
                 if i != j:
-                    if iBall.box[2] > jBall.box[2] and iBall.box[3] < jBall.box[3]:
-                        if iBall.box[0] > jBall.box[0] and iBall.box[0] < jBall.box[1]:
-                            iBall.vel[0] *= 1
-                        if iBall.box[1] > jBall.box[0] and iBall.box[1] < jBall.box[1]:
-                            iBall.vel[0] *= -1
-                    
+                    D = iBall.r+jBall.r
+                    d = np.linalg.norm(jBall.pos-iBall.pos)
+                    if d < D:
+                        iBall.vel[0] *= -1
+                        iBall.vel[1] *= -1                    
     
 # balls = [Ball(),Ball()]
 balls = []
-for i in range(0,25):
+for i in range(0,n):
     balls.append(Ball(r))
 system = System(balls)
 
